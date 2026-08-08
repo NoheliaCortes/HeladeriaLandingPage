@@ -1,17 +1,498 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
-  <title>Vanilla JavaScript App</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Cuchara Rosa — Heladería Artesanal</title>
+<meta name="description" content="Heladería artesanal con obrador propio. Helados tradicionales, sorbetes veganos y ediciones especiales elaboradas cada mañana.">
+
+<!-- Tipografías (CDN fontsource) -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/npm/@fontsource-variable/fraunces@5/index.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fontsource/karla@5/400.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fontsource/karla@5/700.css" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+
+
 </head>
 
 <body>
-  <main>
-    <h1>Vanilla JavaScript App</h1>
-  </main>
-</body>
 
+<a class="enlace-salto" href="#hero">Saltar al contenido principal</a>
+
+<!-- ============================================================
+     ENCABEZADO: logo + navegación
+============================================================= -->
+<header class="encabezado" id="encabezado">
+  <div class="contenedor encabezado-interior">
+
+    <a class="logotipo" href="#hero" aria-label="La Cuchara Rosa — inicio">
+      <svg class="logotipo-icono" viewBox="0 0 40 40" aria-hidden="true">
+        <circle cx="20" cy="13" r="10" fill="#E4607A"/>
+        <circle cx="14" cy="11" r="3" fill="#F4909F" opacity=".8"/>
+        <path d="M10.5 19 L20 37 L29.5 19 Z" fill="#D9A441"/>
+        <path d="M13 23.5 L27 23.5 M15.5 28.5 L24.5 28.5" stroke="#33221C" stroke-width="1.1" opacity=".35"/>
+      </svg>
+      <span>La Cuchara <em>Rosa</em></span>
+    </a>
+
+    <button class="boton-menu" type="button" aria-expanded="false" aria-controls="navegacion-principal" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="navegacion" id="navegacion-principal" aria-label="Navegación principal">
+      <ul class="lista-navegacion">
+        <li><a class="enlace-nav" href="#hero">Inicio</a></li>
+        <li><a class="enlace-nav" href="#productos">Productos</a></li>
+        <li><a class="enlace-nav" href="#nosotros">Nosotros</a></li>
+        <li><a class="enlace-nav" href="#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+
+  </div>
+</header>
+
+<main>
+
+  <!-- ============================================================
+       PROPUESTA DE VALOR (HERO)
+  ============================================================= -->
+  <section class="heroe" id="hero">
+
+    <div class="heroe-fondo" aria-hidden="true">
+      <img src="https://image.qwenlm.ai/public_source/f08010c1-c14f-4c86-8454-0d84e61bedc5/1ab87fbc2-ca85-477c-b892-cc05fa7158c5.png"
+           alt="" fetchpriority="high">
+    </div>
+
+    <div class="contenedor heroe-contenido">
+      <p class="miga-seccion miga-clara revelar">Obrador propio · Valencia · Desde 1987</p>
+      <h1 class="heroe-titulo revelar" style="--retardo-revelar:.1s">
+        El sabor que se hace <span class="palabra-fresa">despacio.</span>
+      </h1>
+      <p class="heroe-subtitulo revelar" style="--retardo-revelar:.2s">
+        Helados de obrador elaborados cada mañana con leche fresca de granja,
+        fruta de temporada y cero conservantes. Sin prisas, sin atajos
+        y sin letra pequeña: solo el oficio de tres generaciones.
+      </p>
+      <div class="heroe-botones revelar" style="--retardo-revelar:.3s">
+        <a class="boton boton-primario" href="#productos">Descubre nuestras líneas <span class="flecha-boton" aria-hidden="true">→</span></a>
+        <a class="boton boton-fantasma" href="#contacto">Cómo llegar</a>
+      </div>
+    </div>
+
+    <!-- Sello circular giratorio -->
+    <svg class="sello-giratorio" viewBox="0 0 140 140" aria-hidden="true">
+      <defs>
+        <path id="trazado-sello" d="M70 70 m -50 0 a 50 50 0 1 1 100 0 a 50 50 0 1 1 -100 0"/>
+      </defs>
+      <circle cx="70" cy="70" r="66" fill="rgba(251,244,232,.94)"/>
+      <text class="sello-texto"><textPath href="#trazado-sello">HELADO ARTESANAL · OBRADOR PROPIO · DESDE 1987 ·</textPath></text>
+      <text class="sello-centro" x="70" y="80">✷</text>
+    </svg>
+  </section>
+
+  <!-- Cinta de sabores en marquesina -->
+  <div class="cinta-sabores" aria-hidden="true">
+    <div class="cinta-pista">
+      <span class="cinta-grupo">
+        Fresa de temporada <span class="separador">✦</span>
+        Pistacho de Bronte <span class="separador">✦</span>
+        Mantecado de la abuela <span class="separador">✦</span>
+        Limón y albahaca <span class="separador">✦</span>
+        Chocolate 70% <span class="separador">✦</span>
+        Nata de obrador <span class="separador">✦</span>
+        Mango vegano <span class="separador">✦</span>
+        Turrón de Jijona <span class="separador">✦</span>
+      </span>
+      <span class="cinta-grupo">
+        Fresa de temporada <span class="separador">✦</span>
+        Pistacho de Bronte <span class="separador">✦</span>
+        Mantecado de la abuela <span class="separador">✦</span>
+        Limón y albahaca <span class="separador">✦</span>
+        Chocolate 70% <span class="separador">✦</span>
+        Nata de obrador <span class="separador">✦</span>
+        Mango vegano <span class="separador">✦</span>
+        Turrón de Jijona <span class="separador">✦</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       FRANJA DEL OFICIO (CIFRAS)
+  ============================================================= -->
+  <section class="seccion seccion-oficio">
+    <div class="contenedor">
+      <p class="miga-seccion revelar">El oficio</p>
+      <p class="frase-oficio revelar" style="--retardo-revelar:.1s">
+        Cada madrugada encendemos la mantecadora y dejamos que la fruta,
+        la leche y el tiempo hagan <em>su trabajo lento</em>.
+      </p>
+      <div class="cifras">
+        <div class="cifra revelar"><strong>38</strong><span>años de oficio heladero</span></div>
+        <div class="cifra revelar" style="--retardo-revelar:.1s"><strong>42</strong><span>sabores de temporada al año</span></div>
+        <div class="cifra revelar" style="--retardo-revelar:.2s"><strong>60%</strong><span>de fruta fresca en cada sorbete</span></div>
+        <div class="cifra revelar" style="--retardo-revelar:.3s"><strong>0</strong><span>conservantes, colorantes o prisas</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       LÍNEAS DE PRODUCTOS
+  ============================================================= -->
+  <section class="seccion seccion-productos" id="productos">
+    <div class="contenedor">
+
+      <div class="encabezado-seccion">
+        <p class="miga-seccion revelar">Nuestras líneas</p>
+        <h2 class="titulo-seccion revelar" style="--retardo-revelar:.1s">Tres familias, un mismo obrador</h2>
+        <p class="descripcion-seccion revelar" style="--retardo-revelar:.2s">
+          Del clásico mantecado a la edición que dura solo un suspiro.
+          Elige tu familia y déjate llevar.
+        </p>
+      </div>
+
+      <div class="cuadricula-productos">
+
+        <!-- Tarjeta destacada: Tradicionales -->
+        <article class="tarjeta-linea tarjeta-grande revelar">
+          <div class="tarjeta-imagen">
+            <img src="https://image.qwenlm.ai/public_source/f08010c1-c14f-4c86-8454-0d84e61bedc5/10c34631e-cb94-4fc2-a515-c595393ddd51.png"
+                 alt="Cucurucho de barquillo con bolas de helado de crema y vainilla de obrador" loading="lazy" decoding="async">
+            <span class="etiqueta-linea">Los clásicos de obrador</span>
+          </div>
+          <div class="tarjeta-cuerpo">
+            <h3>Helados Tradicionales</h3>
+            <p>
+              Mantecados, cremas y recetas que llevan tres generaciones en la familia:
+              leche fresca de granjas cercanas, nata batida a mano y vainilla
+              de Madagascar infusionada en frío. El sabor de siempre, afinado hoy.
+            </p>
+            <ul class="lista-sabores">
+              <li>Mantecado 1953</li><li>Vainilla de Madagascar</li><li>Nata merengada</li><li>Pistacho de Bronte</li>
+            </ul>
+            <a class="enlace-detalles" href="#productos" aria-label="Ver detalles de Helados Tradicionales">Ver detalles <span class="flecha-boton" aria-hidden="true">→</span></a>
+          </div>
+        </article>
+
+        <!-- Tarjeta: Sorbetes Veganos -->
+        <article class="tarjeta-linea revelar" style="--retardo-revelar:.1s">
+          <div class="tarjeta-imagen">
+            <img src="https://image.qwenlm.ai/public_source/f08010c1-c14f-4c86-8454-0d84e61bedc5/1c50a6ffd-278d-4592-915d-ba4ef90f7a72.png"
+                 alt="Cuenco de cerámica con sorbetes de fresa y mango rodeados de frutos rojos y menta" loading="lazy" decoding="async">
+            <span class="etiqueta-linea">Fruta de verdad</span>
+          </div>
+          <div class="tarjeta-cuerpo">
+            <h3>Sorbetes Veganos</h3>
+            <p>
+              Un 60% de fruta fresca de temporada, agua de manantial y nada más.
+              Sin lácteos, sin gluten y sin renunciar a la cremosidad.
+            </p>
+            <ul class="lista-sabores">
+              <li>Fresa ácida</li><li>Mango y lima</li><li>Limón y albahaca</li>
+            </ul>
+            <a class="enlace-detalles" href="#productos" aria-label="Ver detalles de Sorbetes Veganos">Ver detalles <span class="flecha-boton" aria-hidden="true">→</span></a>
+          </div>
+        </article>
+
+        <!-- Tarjeta: Ediciones Especiales -->
+        <article class="tarjeta-linea revelar" style="--retardo-revelar:.2s">
+          <div class="tarjeta-imagen">
+            <img src="https://image.qwenlm.ai/public_source/f08010c1-c14f-4c86-8454-0d84e61bedc5/18ea49437-a2d1-49ea-b203-b282ba1b98c8.png"
+                 alt="Helado de chocolate negro con pan de oro y naranja confitada en cuenco oscuro" loading="lazy" decoding="async">
+            <span class="etiqueta-linea">Serie limitada</span>
+          </div>
+          <div class="tarjeta-cuerpo">
+            <h3>Ediciones Especiales</h3>
+            <p>
+              Colaboraciones con chefs y productores locales. Sabores efímeros
+              que solo duran unas semanas en la vitrina: cuando se acaban,
+              se acaban.
+            </p>
+            <ul class="lista-sabores">
+              <li>Chocolate 70% y oro</li><li>Queso e higos</li><li>Turrón de Jijona</li>
+            </ul>
+            <a class="enlace-detalles" href="#productos" aria-label="Ver detalles de Ediciones Especiales">Ver detalles <span class="flecha-boton" aria-hidden="true">→</span></a>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- Galería horizontal de temporada -->
+      <div class="galeria-temporada revelar">
+        <div class="galeria-cabecera">
+          <h3>Recién salido del obrador</h3>
+          <span class="pista-desliza">Desliza →</span>
+        </div>
+        <div class="galeria-pista" tabindex="0" aria-label="Galería de fotos de helados de temporada">
+          <figure class="tarjeta-galeria">
+            <img src="https://image.qwenlm.ai/public_source/f08010c1-c14f-4c86-8454-0d84e61bedc5/14437cd47-8a47-40c7-82e9-642a204ec11d.png"
+                 alt="Bola de helado de fresa con trozos de fruta fresca sobre fondo rosa" loading="lazy" decoding="async">
+            <figcaption>Fresa de temporada, entera y honesta</figcaption>
+          </figure>
+          <figure class="tarjeta-galeria">
+            <img src="https://image.qwenlm.ai/public_source/f08010c1-c14f-4c86-8454-0d84e61bedc5/1bc6e00d5-7cbf-4b01-b48f-dc1194ef9add.png"
+                 alt="Cucharas de cata de madera con sabores pistacho, fresa, chocolate y limón" loading="lazy" decoding="async">
+            <figcaption>La cata de la semana, en cucharas de olivo</figcaption>
+          </figure>
+          <figure class="tarjeta-galeria">
+            <img src="https://image.qwenlm.ai/public_source/f08010c1-c14f-4c86-8454-0d84e61bedc5/107ec0f61-9946-4e23-9373-de5e0ba94ef6.png"
+                 alt="Manos artesanas boleando una bola de helado de fresa con pala tradicional" loading="lazy" decoding="async">
+            <figcaption>Boleado a pala, como siempre</figcaption>
+          </figure>
+          <figure class="tarjeta-galeria">
+            <img src="https://image.qwenlm.ai/public_source/f08010c1-c14f-4c86-8454-0d84e61bedc5/1ab87fbc2-ca85-477c-b892-cc05fa7158c5.png"
+                 alt="Cuencos de helado de fresa, nata y pistacho sobre lino crema" loading="lazy" decoding="async">
+            <figcaption>El trío de la casa, listo para salir</figcaption>
+          </figure>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SOBRE NOSOTROS
+  ============================================================= -->
+  <section class="seccion seccion-nosotros" id="nosotros">
+    <div class="contenedor nosotros-rejilla">
+
+      <!-- Lado multimedia -->
+      <div class="nosotros-multimedia revelar">
+        <span class="insignia-anios">Desde<br>1987</span>
+        <div class="marco-nosotros">
+          <img src="https://image.qwenlm.ai/public_source/f08010c1-c14f-4c86-8454-0d84e61bedc5/165a4d2a9-49f2-431d-9129-a9b9251b4bf8.png"
+               alt="Maestro heladero vertiendo crema fresca en la mantecadora del obrador" loading="lazy" decoding="async">
+        </div>
+        <div class="foto-solapada">
+          <img src="https://image.qwenlm.ai/public_source/f08010c1-c14f-4c86-8454-0d84e61bedc5/107ec0f61-9946-4e23-9373-de5e0ba94ef6.png"
+               alt="Detalle de las manos del heladero trabajando una bola de fresa" loading="lazy" decoding="async">
+        </div>
+      </div>
+
+      <!-- Lado de texto -->
+      <div class="nosotros-texto">
+        <p class="miga-seccion revelar">Nuestra historia</p>
+        <h2 class="titulo-seccion revelar" style="--retardo-revelar:.1s">Tres generaciones alrededor de una mantecadora</h2>
+        <p class="revelar" style="--retardo-revelar:.15s">
+          Todo empezó en 1987 con un cuaderno de recetas traído de un verano en
+          Bolonia y una mantecadora de segunda mano. El abelo Aurelio abría la
+          persiana a las seis de la mañana; hoy su nieta Marta hace lo mismo,
+          con el mismo cuaderno — más gastado — y la misma regla de la casa:
+          <strong>si no nos lo comeríamos nosotros, no sale a la vitrina.</strong>
+        </p>
+        <p class="revelar" style="--retardo-revelar:.2s">
+          Trabajamos con fruterías del mercado central, granjas a menos de
+          cuarenta kilómetros y un tueste de cacao que nos guarda un
+          productor de Xàtiva. Lo demás lo ponen el frío, la pala y la paciencia.
+        </p>
+
+        <ul class="lista-valores">
+          <li class="revelar">
+            <span class="icono-valor" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21c-4.5 0-8-3.5-8-8 0-5 4-9 8-10 4 1 8 5 8 10 0 4.5-3.5 8-8 8z"/><path d="M12 21V9"/><path d="M12 13l3.5-3M12 16l-3.5-3"/></svg>
+            </span>
+            <div>
+              <h3>Ingredientes de proximidad</h3>
+              <p>Leche de granjas a menos de 40 km y fruta comprada cada mañana en el mercado central.</p>
+            </div>
+          </li>
+          <li class="revelar" style="--retardo-revelar:.1s">
+            <span class="icono-valor" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.8-7 10-7 10 7 10 7-3.8 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+            </span>
+            <div>
+              <h3>Obrador a la vista</h3>
+              <p>Un cristal separa la tienda del taller: puedes vernos pasteurizar, mantecar y bolear cuando quieras.</p>
+            </div>
+          </li>
+          <li class="revelar" style="--retardo-revelar:.2s">
+            <span class="icono-valor" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5v14z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/><path d="M9 7h7M9 11h7"/></svg>
+            </span>
+            <div>
+              <h3>Recetas de familia</h3>
+              <p>El cuaderno de 1953 sigue abierto sobre el mármol. Cada sabor nuevo se anota al lado de los de siempre.</p>
+            </div>
+          </li>
+        </ul>
+
+        <p class="firma revelar">— Familia Reig, maestros heladeros</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CONTACTO
+  ============================================================= -->
+  <section class="seccion seccion-contacto" id="contacto">
+    <div class="contenedor">
+
+      <div class="encabezado-seccion">
+        <p class="miga-seccion revelar">Contáctanos</p>
+        <h2 class="titulo-seccion revelar" style="--retardo-revelar:.1s">Ven a probarlo, o escríbenos dos líneas</h2>
+        <p class="descripcion-seccion revelar" style="--retardo-revelar:.2s">
+          Encargos de tartas heladas, eventos o simplemente dudas sobre
+          sabores del día: te leemos entre batido y batido.
+        </p>
+      </div>
+
+      <div class="contacto-rejilla">
+
+        <!-- Formulario de contacto -->
+        <form class="formulario-contacto revelar" action="#" method="post">
+          <div class="campo-fila">
+            <div class="campo">
+              <label for="campo-nombre">Nombre</label>
+              <input type="text" id="campo-nombre" name="nombre" placeholder="Tu nombre" autocomplete="name" required>
+            </div>
+            <div class="campo">
+              <label for="campo-email">Correo electrónico</label>
+              <input type="email" id="campo-email" name="email" placeholder="tucorreo@ejemplo.com" autocomplete="email" required>
+            </div>
+          </div>
+          <div class="campo">
+            <label for="campo-mensaje">Mensaje</label>
+            <textarea id="campo-mensaje" name="mensaje" placeholder="Cuéntanos: ¿una tarta helada, un encargo, una duda dulce…?" required></textarea>
+          </div>
+          <button class="boton boton-primario boton-enviar" type="submit">Enviar mensaje <span class="flecha-boton" aria-hidden="true">→</span></button>
+        </form>
+
+        <!-- Información lateral + multimedia -->
+        <aside class="info-lateral">
+          <div class="tarjeta-datos revelar" style="--retardo-revelar:.1s">
+            <div class="bloque-datos">
+              <h3>✷ La heladería</h3>
+              <p>Calle de la Marina, 14<br>46003 · Valencia (Barrio del Carmen)<br>Frente al mercado central</p>
+            </div>
+            <div class="bloque-datos">
+              <h3>✷ Horarios</h3>
+              <div class="fila-horario"><span class="dia">Lunes — Jueves</span><span class="hora">12:00 – 22:00</span></div>
+              <div class="fila-horario"><span class="dia">Viernes — Sábado</span><span class="hora">12:00 – 00:00</span></div>
+              <div class="fila-horario"><span class="dia">Domingo</span><span class="hora">12:00 – 21:00</span></div>
+            </div>
+            <div class="bloque-datos">
+              <h3>✷ Directo al obrador</h3>
+              <p><a href="tel:+34963000000">+34 963 00 00 00</a><br>
+              <a href="mailto:hola@lacuchararosa.es">hola@lacuchararosa.es</a></p>
+            </div>
+          </div>
+
+          <div class="marco-mapa revelar" style="--retardo-revelar:.2s">
+            <img src="https://image.qwenlm.ai/public_source/f08010c1-c14f-4c86-8454-0d84e61bedc5/1b4b78e75-73cb-4a18-ba4e-43df2b39da6a.png"
+                 alt="Fachada rosa de la heladería con toldo a rayas y olivos en la entrada" loading="lazy" decoding="async">
+            <span class="mapa-rotulo">📍 Estamos aquí, junto al mercado</span>
+          </div>
+
+          <a class="boton boton-contorno revelar" style="--retardo-revelar:.3s" href="#contacto">Abrir en el mapa <span class="flecha-boton" aria-hidden="true">→</span></a>
+        </aside>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================================================
+     PIE DE PÁGINA
+============================================================= -->
+<footer class="pie-pagina">
+  <div class="contenedor">
+    <div class="pie-interior">
+      <div>
+        <p class="pie-marca">
+          <svg class="logotipo-icono" viewBox="0 0 40 40" aria-hidden="true">
+            <circle cx="20" cy="13" r="10" fill="#E4607A"/>
+            <path d="M10.5 19 L20 37 L29.5 19 Z" fill="#D9A441"/>
+          </svg>
+          La Cuchara <em>Rosa</em>
+        </p>
+        <p>Heladería artesanal con obrador propio en el corazón de Valencia. Hecho a mano, cada mañana, desde 1987.</p>
+      </div>
+      <nav aria-label="Navegación de pie de página">
+        <p class="pie-titulo">Secciones</p>
+        <ul class="pie-lista">
+          <li><a href="#hero">Inicio</a></li>
+          <li><a href="#productos">Productos</a></li>
+          <li><a href="#nosotros">Nosotros</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </nav>
+      <div>
+        <p class="pie-titulo">Síguenos el rastro</p>
+        <ul class="pie-lista">
+          <li><a href="#contacto">Instagram — @lacuchararosa</a></li>
+          <li><a href="#contacto">Boletín de sabores del mes</a></li>
+          <li><a href="#contacto">hola@lacuchararosa.es</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="pie-legal">
+      <span>© <span id="anio-actual">2026</span> La Cuchara Rosa · Heladería artesanal</span>
+      <span>Hecho a mano en Valencia, con leche fresca y paciencia</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   MEJORAS PROGRESIVAS (JS vanilla, sin frameworks)
+============================================================= */
+(function(){
+  'use strict';
+
+  /* --- Menú de navegación móvil --- */
+  var encabezado = document.querySelector('.encabezado');
+  var botonMenu  = document.querySelector('.boton-menu');
+  var navegacion = document.querySelector('.navegacion');
+
+  botonMenu.addEventListener('click', function(){
+    var abierto = encabezado.classList.toggle('navegacion-abierta');
+    botonMenu.setAttribute('aria-expanded', abierto ? 'true' : 'false');
+    botonMenu.setAttribute('aria-label', abierto ? 'Cerrar menú de navegación' : 'Abrir menú de navegación');
+  });
+
+  /* Cerrar el menú al elegir un enlace */
+  navegacion.querySelectorAll('a').forEach(function(enlace){
+    enlace.addEventListener('click', function(){
+      encabezado.classList.remove('navegacion-abierta');
+      botonMenu.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  /* --- Aparición suave al hacer scroll --- */
+  var elementos = document.querySelectorAll('.revelar');
+  var sinMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (sinMovimiento || !('IntersectionObserver' in window)) {
+    elementos.forEach(function(el){ el.classList.add('visible'); });
+  } else {
+    var observador = new IntersectionObserver(function(entradas){
+      entradas.forEach(function(entrada){
+        if (entrada.isIntersecting) {
+          entrada.target.classList.add('visible');
+          observador.unobserve(entrada.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    elementos.forEach(function(el){ observador.observe(el); });
+  }
+
+  /* --- Envío simulado del formulario --- */
+  var formulario = document.querySelector('.formulario-contacto');
+  formulario.addEventListener('submit', function(evento){
+    evento.preventDefault();
+    var boton = formulario.querySelector('.boton-enviar');
+    var textoOriginal = boton.innerHTML;
+    boton.innerHTML = '¡Mensaje enviado! ✷';
+    formulario.reset();
+    setTimeout(function(){ boton.innerHTML = textoOriginal; }, 3200);
+  });
+
+  /* --- Año automático en el pie --- */
+  document.getElementById('anio-actual').textContent = new Date().getFullYear();
+})();
+</script>
+
+</body>
 </html>
