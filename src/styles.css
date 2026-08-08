@@ -1,21 +1,723 @@
-* {
-  font-family: Arial, Helvetica, sans-serif;
+/* =====================================================================
+   HOJA DE ESTILOS — «LA CUCHARA ROSA» · HELADERÍA ARTESANAL
+   ÍNDICE:
+   01 · Variables y ajustes globales
+   02 · Utilidades y animaciones de aparición
+   03 · Encabezado y navegación
+   04 · Propuesta de valor (hero)
+   05 · Cinta de sabores (marquesina)
+   06 · Franja del oficio (cifras)
+   07 · Líneas de productos (cuadrícula)
+   08 · Galería de temporada
+   09 · Sobre nosotros
+   10 · Contacto
+   11 · Pie de página
+   12 · Accesibilidad (movimiento reducido)
+   ===================================================================== */
+
+/* ---------------------------------------------------------------------
+   01 · VARIABLES Y AJUSTES GLOBALES
+--------------------------------------------------------------------- */
+:root{
+  /* Paleta neutra con acentos pastel (crema / fresa / chocolate) */
+  --color-crema:            #FBF4E8;
+  --color-crema-claro:      #FFFDF8;
+  --color-crema-oscuro:     #F0E2CE;
+  --color-fresa:            #E4607A;
+  --color-fresa-oscuro:     #C24A63;
+  --color-chocolate:        #33221C;
+  --color-chocolate-suave:  #5C443A;
+  --color-menta:            #9FBFA6;
+  --color-dorado:           #D9A441;
+
+  /* Tipografías: display serif + texto humanista */
+  --tipografia-titulo: 'Fraunces Variable', Georgia, serif;
+  --tipografia-texto:  'Karla', 'Segoe UI', Tahoma, sans-serif;
+
+  /* Medidas y ritmo */
+  --ancho-maximo:   1240px;
+  --radio-tarjeta:  24px;
+  --sombra-tarjeta: 0 28px 56px -28px rgba(51,34,28,.35);
+  --transicion:     .35s cubic-bezier(.22,.61,.36,1);
 }
 
-html, body {
-  margin: 0;
-  border: 0;
-  padding: 0;
-  background-color: #fff;
+*,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+
+html{ scroll-behavior:smooth; }
+
+body{
+  font-family:var(--tipografia-texto);
+  background:var(--color-crema);
+  color:var(--color-chocolate);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
 }
 
-main {
-  margin: auto;
-  width: 50%;
-  padding: 20px;
+/* Imágenes y vídeos responsive en toda la página */
+img, video{
+  max-width:100%;
+  height:auto;
+  display:block;
 }
 
-main > h1 {
-  text-align: center;
-  font-size: 3.5em;
+section{ scroll-margin-top:5.5rem; }
+
+::selection{ background:var(--color-fresa); color:#fff; }
+
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible{
+  outline:3px solid var(--color-fresa-oscuro);
+  outline-offset:3px;
+  border-radius:6px;
+}
+
+/* Contenedor fluido reutilizable */
+.contenedor{
+  width:min(100% - 2.5rem, var(--ancho-maximo));
+  margin-inline:auto;
+}
+
+/* Enlace de salto (accesibilidad) */
+.enlace-salto{
+  position:absolute; left:-999px; top:0;
+  background:var(--color-chocolate); color:var(--color-crema);
+  padding:.8rem 1.4rem; border-radius:0 0 12px 0; z-index:100;
+  font-weight:700; text-decoration:none;
+}
+.enlace-salto:focus{ left:0; }
+
+/* ---------------------------------------------------------------------
+   02 · UTILIDADES Y ANIMACIONES DE APARICIÓN
+--------------------------------------------------------------------- */
+/* Etiqueta de sección ("miga") */
+.miga-seccion{
+  display:flex; align-items:center; gap:.75rem;
+  text-transform:uppercase;
+  letter-spacing:.22em;
+  font-size:.78rem; font-weight:700;
+  color:var(--color-fresa-oscuro);
+}
+.miga-seccion::before{
+  content:""; width:36px; height:2px;
+  background:var(--color-fresa); flex:none;
+}
+.miga-clara{ color:var(--color-crema-oscuro); }
+.miga-clara::before{ background:var(--color-fresa); }
+
+.titulo-seccion{
+  font-family:var(--tipografia-titulo);
+  font-weight:600;
+  font-size:clamp(2rem, 4.6vw, 3.4rem);
+  line-height:1.08;
+  letter-spacing:-.01em;
+  max-width:20ch;
+}
+
+/* Revelado al hacer scroll (activado con JS) */
+.revelar{
+  opacity:0;
+  transform:translateY(30px);
+  transition:opacity .8s ease var(--retardo-revelar, 0s),
+             transform .8s ease var(--retardo-revelar, 0s);
+}
+.revelar.visible{ opacity:1; transform:none; }
+
+@keyframes acercar-imagen{
+  from{ transform:scale(1); }
+  to  { transform:scale(1.1); }
+}
+@keyframes girar-sello{
+  to{ transform:rotate(360deg); }
+}
+@keyframes desplazar-cinta{
+  to{ transform:translateX(-50%); }
+}
+
+/* ---------------------------------------------------------------------
+   03 · ENCABEZADO Y NAVEGACIÓN
+--------------------------------------------------------------------- */
+.encabezado{
+  position:sticky; top:0; z-index:60;
+  background:rgba(251,244,232,.92);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(51,34,28,.08);
+}
+.encabezado-interior{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:1rem; padding-block:.85rem; position:relative;
+}
+.logotipo{
+  display:flex; align-items:center; gap:.65rem;
+  text-decoration:none; color:var(--color-chocolate);
+  font-family:var(--tipografia-titulo);
+  font-weight:700; font-size:1.3rem; letter-spacing:.01em;
+}
+.logotipo-icono{ width:38px; height:38px; flex:none; }
+.logotipo em{ font-style:italic; color:var(--color-fresa-oscuro); }
+
+/* Botón hamburguesa (solo móvil) */
+.boton-menu{
+  display:grid; gap:5px; justify-items:center;
+  background:none; border:0; cursor:pointer;
+  padding:.7rem .5rem; border-radius:10px;
+}
+.boton-menu span{
+  width:26px; height:2.5px; border-radius:2px;
+  background:var(--color-chocolate);
+  transition:transform var(--transicion), opacity var(--transicion);
+}
+.navegacion-abierta .boton-menu span:nth-child(1){ transform:translateY(7.5px) rotate(45deg); }
+.navegacion-abierta .boton-menu span:nth-child(2){ opacity:0; }
+.navegacion-abierta .boton-menu span:nth-child(3){ transform:translateY(-7.5px) rotate(-45deg); }
+
+/* Menú plegado en móvil */
+.navegacion{ display:none; }
+.navegacion-abierta .navegacion{
+  display:flex;
+  position:absolute; top:100%; left:0; right:0;
+  background:var(--color-crema-claro);
+  border-bottom:1px solid rgba(51,34,28,.1);
+  box-shadow:0 30px 44px -32px rgba(51,34,28,.45);
+  padding:1rem 1.5rem 1.6rem;
+}
+.lista-navegacion{
+  list-style:none; display:flex; flex-direction:column; gap:.35rem; width:100%;
+}
+.enlace-nav{
+  display:block; padding:.65rem .25rem;
+  text-decoration:none; font-weight:700; font-size:1.05rem;
+  color:var(--color-chocolate-suave);
+  border-bottom:1px dashed rgba(51,34,28,.14);
+  transition:color var(--transicion), padding-left var(--transicion);
+}
+.enlace-nav:hover{ color:var(--color-fresa-oscuro); padding-left:.6rem; }
+
+/* Escritorio: menú en línea */
+@media (min-width:900px){
+  .boton-menu{ display:none; }
+  .navegacion, .navegacion-abierta .navegacion{
+    display:flex; position:static;
+    background:none; border:0; box-shadow:none; padding:0;
+  }
+  .lista-navegacion{ flex-direction:row; gap:2rem; width:auto; }
+  .enlace-nav{
+    border-bottom:0; padding:.35rem 0; font-size:.98rem;
+    background:linear-gradient(var(--color-fresa), var(--color-fresa)) no-repeat left bottom / 0 2px;
+    transition:background-size var(--transicion), color var(--transicion);
+  }
+  .enlace-nav:hover{ padding-left:0; background-size:100% 2px; color:var(--color-chocolate); }
+}
+
+/* ---------------------------------------------------------------------
+   04 · PROPUESTA DE VALOR (HERO)
+--------------------------------------------------------------------- */
+.heroe{
+  position:relative; overflow:hidden;
+  min-height:100vh; min-height:100svh;
+  display:flex; align-items:flex-end;
+}
+/* Fondo multimedia a sangre con efecto de respiración */
+.heroe-fondo{ position:absolute; inset:0; }
+.heroe-fondo img{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  object-fit:cover;
+  animation:acercar-imagen 18s ease-in-out infinite alternate;
+  transform-origin:center;
+}
+.heroe-fondo::after{
+  content:""; position:absolute; inset:0;
+  background:linear-gradient(100deg,
+    rgba(38,22,17,.88) 0%,
+    rgba(38,22,17,.55) 45%,
+    rgba(38,22,17,.12) 100%);
+}
+.heroe-contenido{
+  position:relative; z-index:2;
+  padding-block:clamp(6rem, 14vh, 9rem) clamp(4.5rem, 10vh, 7rem);
+  display:grid; gap:1.4rem; justify-items:start;
+}
+.heroe-titulo{
+  font-family:var(--tipografia-titulo);
+  font-weight:600;
+  font-size:clamp(2.8rem, 8vw, 6rem);
+  line-height:1.02; letter-spacing:-.015em;
+  color:var(--color-crema-claro);
+  max-width:15ch;
+  text-wrap:balance;
+}
+.heroe-titulo .palabra-fresa{
+  font-style:italic; font-weight:500;
+  color:var(--color-fresa);
+}
+.heroe-subtitulo{
+  max-width:46ch;
+  color:rgba(251,244,232,.88);
+  font-size:clamp(1.02rem, 1.6vw, 1.2rem);
+  line-height:1.75;
+}
+.heroe-botones{ display:flex; flex-wrap:wrap; gap:1rem; margin-top:.6rem; }
+
+/* Botones reutilizables */
+.boton{
+  display:inline-flex; align-items:center; gap:.6rem;
+  font-family:var(--tipografia-texto);
+  font-weight:700; font-size:1rem;
+  text-decoration:none; cursor:pointer;
+  border-radius:999px; border:2px solid transparent;
+  padding:.95rem 1.9rem;
+  transition:transform var(--transicion), background var(--transicion),
+             color var(--transicion), box-shadow var(--transicion),
+             border-color var(--transicion);
+}
+.boton .flecha-boton{ transition:transform var(--transicion); }
+.boton:hover .flecha-boton{ transform:translateX(5px); }
+.boton-primario{
+  background:var(--color-fresa-oscuro); color:#fff;
+  box-shadow:0 14px 30px -12px rgba(194,74,99,.65);
+}
+.boton-primario:hover{ background:var(--color-fresa); transform:translateY(-3px); }
+.boton-fantasma{
+  border-color:rgba(251,244,232,.55); color:var(--color-crema-claro);
+}
+.boton-fantasma:hover{ background:var(--color-crema-claro); color:var(--color-chocolate); transform:translateY(-3px); }
+.boton-contorno{
+  border-color:var(--color-chocolate); color:var(--color-chocolate);
+}
+.boton-contorno:hover{ background:var(--color-chocolate); color:var(--color-crema); transform:translateY(-3px); }
+
+/* Sello circular giratorio */
+.sello-giratorio{
+  position:absolute; z-index:3;
+  right:clamp(1.2rem, 6vw, 5rem); bottom:16%;
+  width:clamp(110px, 13vw, 150px); aspect-ratio:1;
+  animation:girar-sello 26s linear infinite;
+  filter:drop-shadow(0 12px 24px rgba(51,34,28,.35));
+}
+.sello-texto{
+  font-family:var(--tipografia-texto);
+  font-size:12.5px; font-weight:700; letter-spacing:2.6px;
+  fill:var(--color-chocolate);
+}
+.sello-centro{
+  font-size:30px; fill:var(--color-fresa-oscuro);
+  text-anchor:middle;
+}
+@media (max-width:719px){ .sello-giratorio{ display:none; } }
+
+/* ---------------------------------------------------------------------
+   05 · CINTA DE SABORES (MARQUESINA)
+--------------------------------------------------------------------- */
+.cinta-sabores{
+  background:var(--color-chocolate);
+  color:var(--color-crema);
+  overflow:hidden;
+  padding-block:.95rem;
+}
+.cinta-pista{
+  display:flex; width:max-content;
+  animation:desplazar-cinta 34s linear infinite;
+}
+.cinta-sabores:hover .cinta-pista{ animation-play-state:paused; }
+.cinta-grupo{
+  display:flex; align-items:center; gap:2.8rem;
+  padding-right:2.8rem;
+  font-family:var(--tipografia-titulo);
+  font-style:italic; font-size:1.08rem;
+  white-space:nowrap;
+}
+.cinta-grupo .separador{ color:var(--color-fresa); font-style:normal; }
+
+/* ---------------------------------------------------------------------
+   06 · FRANJA DEL OFICIO (CIFRAS)
+--------------------------------------------------------------------- */
+.seccion{ padding-block:clamp(4.5rem, 9vw, 8rem); }
+
+.seccion-oficio{ padding-block:clamp(4rem, 8vw, 6.5rem); }
+.frase-oficio{
+  font-family:var(--tipografia-titulo);
+  font-size:clamp(1.5rem, 3.2vw, 2.5rem);
+  line-height:1.3; max-width:30ch;
+  margin-top:1.2rem;
+  text-wrap:balance;
+}
+.frase-oficio em{ color:var(--color-fresa-oscuro); }
+.cifras{
+  display:grid; gap:2.2rem;
+  grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));
+  margin-top:clamp(2.5rem, 5vw, 4rem);
+}
+.cifra{ border-top:2px solid rgba(51,34,28,.12); padding-top:1.1rem; }
+.cifra strong{
+  display:block;
+  font-family:var(--tipografia-titulo);
+  font-weight:600;
+  font-size:clamp(2.4rem, 5vw, 3.6rem);
+  color:var(--color-fresa-oscuro);
+  line-height:1;
+}
+.cifra span{
+  display:block; margin-top:.4rem;
+  font-size:.92rem; color:var(--color-chocolate-suave);
+  max-width:20ch;
+}
+
+/* ---------------------------------------------------------------------
+   07 · LÍNEAS DE PRODUCTOS (CUADRÍCULA)
+--------------------------------------------------------------------- */
+.encabezado-seccion{
+  display:grid; gap:1.1rem;
+  margin-bottom:clamp(2.6rem, 5vw, 4.2rem);
+}
+.descripcion-seccion{
+  max-width:46ch; color:var(--color-chocolate-suave);
+  font-size:1.05rem;
+}
+@media (min-width:900px){
+  .encabezado-seccion{
+    grid-template-columns:1fr auto;
+    align-items:end; column-gap:3rem;
+  }
+  .encabezado-seccion .descripcion-seccion{
+    grid-column:2; text-align:right; justify-self:end; padding-bottom:.35rem;
+  }
+  .encabezado-seccion .miga-seccion,
+  .encabezado-seccion .titulo-seccion{ grid-column:1; }
+}
+
+.cuadricula-productos{
+  display:grid; gap:1.7rem;
+  grid-template-columns:1fr;
+}
+@media (min-width:700px){
+  .cuadricula-productos{ grid-template-columns:1fr 1fr; }
+  .tarjeta-grande{ grid-column:1 / -1; }
+}
+@media (min-width:1080px){
+  .cuadricula-productos{ grid-template-columns:1.05fr .95fr; grid-auto-rows:1fr; }
+  .tarjeta-grande{ grid-column:auto; grid-row:1 / 3; }
+}
+
+/* Tarjeta de línea de helados */
+.tarjeta-linea{
+  display:flex; flex-direction:column;
+  background:var(--color-crema-claro);
+  border:1px solid rgba(51,34,28,.08);
+  border-radius:var(--radio-tarjeta);
+  overflow:hidden;
+  transition:transform var(--transicion), box-shadow var(--transicion);
+}
+.tarjeta-linea:hover{ transform:translateY(-7px); box-shadow:var(--sombra-tarjeta); }
+
+/* Contenedor multimedia amplio */
+.tarjeta-imagen{
+  position:relative; overflow:hidden;
+  aspect-ratio:16 / 10;
+  background:var(--color-crema-oscuro);
+}
+.tarjeta-imagen img{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  object-fit:cover;
+  transition:transform 1s cubic-bezier(.22,.61,.36,1);
+}
+.tarjeta-linea:hover .tarjeta-imagen img{ transform:scale(1.06); }
+.etiqueta-linea{
+  position:absolute; top:1.1rem; left:1.1rem; z-index:2;
+  background:var(--color-crema-claro);
+  color:var(--color-chocolate);
+  font-size:.72rem; font-weight:700;
+  text-transform:uppercase; letter-spacing:.16em;
+  padding:.45rem .9rem; border-radius:999px;
+  box-shadow:0 8px 18px -8px rgba(51,34,28,.4);
+}
+
+.tarjeta-cuerpo{
+  padding:clamp(1.4rem, 3vw, 2rem);
+  display:flex; flex-direction:column; gap:.85rem;
+  flex:1;
+}
+.tarjeta-cuerpo h3{
+  font-family:var(--tipografia-titulo);
+  font-weight:600; font-size:clamp(1.35rem, 2.2vw, 1.7rem);
+  line-height:1.15;
+}
+.tarjeta-cuerpo p{ color:var(--color-chocolate-suave); font-size:.98rem; }
+.lista-sabores{
+  list-style:none; display:flex; flex-wrap:wrap; gap:.5rem;
+}
+.lista-sabores li{
+  font-size:.76rem; font-weight:700;
+  letter-spacing:.04em;
+  border:1.5px solid rgba(51,34,28,.18);
+  border-radius:999px; padding:.32rem .8rem;
+  color:var(--color-chocolate-suave);
+  background:var(--color-crema);
+}
+.enlace-detalles{
+  margin-top:auto; padding-top:.6rem;
+  display:inline-flex; align-items:center; gap:.55rem;
+  font-weight:700; text-decoration:none;
+  color:var(--color-fresa-oscuro);
+}
+.enlace-detalles .flecha-boton{ transition:transform var(--transicion); }
+.enlace-detalles:hover .flecha-boton{ transform:translateX(6px); }
+
+/* Tarjeta destacada: imagen a sangre que crece */
+@media (min-width:1080px){
+  .tarjeta-grande .tarjeta-imagen{ aspect-ratio:auto; flex:1; min-height:420px; }
+}
+
+/* ---------------------------------------------------------------------
+   08 · GALERÍA DE TEMPORADA
+--------------------------------------------------------------------- */
+.galeria-temporada{ margin-top:clamp(3rem, 6vw, 4.8rem); }
+.galeria-cabecera{
+  display:flex; align-items:baseline; justify-content:space-between;
+  gap:1rem; margin-bottom:1.4rem;
+}
+.galeria-cabecera h3{
+  font-family:var(--tipografia-titulo);
+  font-weight:600; font-size:clamp(1.3rem, 2.4vw, 1.8rem);
+}
+.pista-desliza{
+  font-size:.85rem; font-weight:700;
+  text-transform:uppercase; letter-spacing:.18em;
+  color:var(--color-chocolate-suave);
+}
+.galeria-pista{
+  display:grid; grid-auto-flow:column;
+  grid-auto-columns:min(74vw, 320px);
+  gap:1.3rem; overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  padding-bottom:1rem;
+  scrollbar-color:var(--color-crema-oscuro) transparent;
+}
+.galeria-pista::-webkit-scrollbar{ height:8px; }
+.galeria-pista::-webkit-scrollbar-thumb{ background:var(--color-crema-oscuro); border-radius:99px; }
+.tarjeta-galeria{
+  position:relative; overflow:hidden;
+  aspect-ratio:3 / 4; border-radius:18px;
+  scroll-snap-align:start;
+  background:var(--color-crema-oscuro);
+}
+.tarjeta-galeria img{
+  position:absolute; inset:0;
+  width:100%; height:100%; object-fit:cover;
+  transition:transform 1s cubic-bezier(.22,.61,.36,1);
+}
+.tarjeta-galeria:hover img{ transform:scale(1.07); }
+.tarjeta-galeria figcaption{
+  position:absolute; left:0; right:0; bottom:0; z-index:2;
+  padding:2.4rem 1.2rem 1.1rem;
+  background:linear-gradient(transparent, rgba(38,22,17,.82));
+  color:var(--color-crema-claro);
+  font-family:var(--tipografia-titulo); font-style:italic; font-size:1.05rem;
+}
+
+/* ---------------------------------------------------------------------
+   09 · SOBRE NOSOTROS
+--------------------------------------------------------------------- */
+.seccion-nosotros{ background:var(--color-crema-claro); }
+.nosotros-rejilla{
+  display:grid; gap:clamp(3rem, 6vw, 5rem);
+  align-items:center;
+}
+@media (min-width:960px){
+  .nosotros-rejilla{ grid-template-columns:1.02fr .98fr; }
+}
+.nosotros-multimedia{ position:relative; padding:1.4rem 1.4rem 2.6rem 0; }
+.marco-nosotros{
+  position:relative; overflow:hidden;
+  aspect-ratio:4 / 5; border-radius:28px;
+  background:var(--color-crema-oscuro);
+}
+.marco-nosotros img{
+  position:absolute; inset:0;
+  width:100%; height:100%; object-fit:cover;
+}
+/* Fotografía solapada tipo polaroid */
+.foto-solapada{
+  position:absolute; right:-.4rem; bottom:0;
+  width:46%; aspect-ratio:4 / 5;
+  border-radius:16px; overflow:hidden;
+  border:7px solid var(--color-crema-claro);
+  box-shadow:0 24px 44px -20px rgba(51,34,28,.45);
+  transform:rotate(4deg);
+  background:var(--color-crema-oscuro);
+}
+.foto-solapada img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+/* Insignia «Desde 1987» */
+.insignia-anios{
+  position:absolute; top:0; left:-.4rem; z-index:3;
+  width:104px; height:104px; border-radius:50%;
+  background:var(--color-fresa); color:#fff;
+  display:grid; place-items:center; text-align:center;
+  font-family:var(--tipografia-titulo); font-style:italic;
+  font-size:.95rem; line-height:1.15;
+  transform:rotate(-8deg);
+  box-shadow:0 16px 30px -12px rgba(194,74,99,.6);
+}
+.nosotros-texto p{ color:var(--color-chocolate-suave); margin-top:1.1rem; max-width:56ch; }
+.lista-valores{
+  list-style:none; display:grid; gap:1.5rem;
+  margin-top:2.2rem;
+}
+.lista-valores li{ display:flex; gap:1.1rem; align-items:flex-start; }
+.icono-valor{
+  flex:none; width:54px; height:54px;
+  display:grid; place-items:center;
+  border-radius:50%;
+  background:var(--color-crema);
+  border:1.5px solid rgba(51,34,28,.14);
+  color:var(--color-fresa-oscuro);
+}
+.lista-valores h3{
+  font-family:var(--tipografia-titulo);
+  font-weight:600; font-size:1.15rem; margin-bottom:.25rem;
+}
+.lista-valores li p{ margin-top:0; font-size:.95rem; }
+.firma{
+  font-family:var(--tipografia-titulo); font-style:italic;
+  color:var(--color-fresa-oscuro); font-size:1.15rem;
+  margin-top:2.2rem;
+}
+
+/* ---------------------------------------------------------------------
+   10 · CONTACTO
+--------------------------------------------------------------------- */
+.contacto-rejilla{
+  display:grid; gap:2.4rem;
+  align-items:start;
+}
+@media (min-width:1000px){
+  .contacto-rejilla{ grid-template-columns:1.08fr .92fr; }
+}
+
+/* Formulario */
+.formulario-contacto{
+  background:var(--color-crema-claro);
+  border:1px solid rgba(51,34,28,.08);
+  border-radius:28px;
+  padding:clamp(1.6rem, 4vw, 2.8rem);
+  display:grid; gap:1.35rem;
+  box-shadow:var(--sombra-tarjeta);
+}
+.campo-fila{ display:grid; gap:1.35rem; }
+@media (min-width:640px){ .campo-fila{ grid-template-columns:1fr 1fr; } }
+.campo{ display:grid; gap:.5rem; }
+.campo label{ font-weight:700; font-size:.95rem; }
+.campo input, .campo textarea{
+  font:inherit; color:var(--color-chocolate);
+  background:#fff;
+  border:1.5px solid rgba(51,34,28,.18);
+  border-radius:14px;
+  padding:.9rem 1.1rem; width:100%;
+  transition:border-color var(--transicion), box-shadow var(--transicion);
+}
+.campo input::placeholder, .campo textarea::placeholder{ color:rgba(92,68,58,.45); }
+.campo input:focus, .campo textarea:focus{
+  outline:none;
+  border-color:var(--color-fresa-oscuro);
+  box-shadow:0 0 0 4px rgba(228,96,122,.18);
+}
+.campo textarea{ resize:vertical; min-height:150px; }
+.boton-enviar{ justify-content:center; width:100%; }
+
+/* Columna lateral de información */
+.info-lateral{ display:grid; gap:1.6rem; }
+.tarjeta-datos{
+  background:var(--color-crema-claro);
+  border:1px solid rgba(51,34,28,.08);
+  border-radius:24px;
+  padding:clamp(1.4rem, 3vw, 2rem);
+  display:grid; gap:1.4rem;
+}
+.bloque-datos h3{
+  font-family:var(--tipografia-titulo); font-weight:600;
+  font-size:1.05rem; margin-bottom:.5rem;
+  display:flex; align-items:center; gap:.55rem;
+  color:var(--color-fresa-oscuro);
+}
+.bloque-datos p, .bloque-datos a{
+  color:var(--color-chocolate-suave); font-size:.97rem; text-decoration:none;
+}
+.bloque-datos a:hover{ color:var(--color-fresa-oscuro); text-decoration:underline; }
+.fila-horario{
+  display:flex; justify-content:space-between; gap:1rem;
+  padding-block:.45rem;
+  border-bottom:1px dashed rgba(51,34,28,.15);
+  font-size:.95rem;
+}
+.fila-horario .dia{ font-weight:700; }
+.fila-horario .hora{ color:var(--color-chocolate-suave); }
+
+/* Marco multimedia del local / mapa */
+.marco-mapa{
+  position:relative; overflow:hidden;
+  aspect-ratio:4 / 3; border-radius:24px;
+  background:var(--color-crema-oscuro);
+}
+.marco-mapa img{
+  position:absolute; inset:0;
+  width:100%; height:100%; object-fit:cover;
+  transition:transform 1s cubic-bezier(.22,.61,.36,1);
+}
+.marco-mapa:hover img{ transform:scale(1.05); }
+.mapa-rotulo{
+  position:absolute; left:1.1rem; bottom:1.1rem; z-index:2;
+  display:inline-flex; align-items:center; gap:.5rem;
+  background:var(--color-crema-claro);
+  border-radius:999px; padding:.6rem 1.1rem;
+  font-size:.85rem; font-weight:700;
+  box-shadow:0 12px 24px -10px rgba(51,34,28,.5);
+}
+
+/* ---------------------------------------------------------------------
+   11 · PIE DE PÁGINA
+--------------------------------------------------------------------- */
+.pie-pagina{
+  background:var(--color-chocolate);
+  color:var(--color-crema);
+  margin-top:clamp(4rem, 8vw, 6rem);
+}
+.pie-interior{
+  display:grid; gap:2.6rem;
+  padding-block:clamp(3rem, 6vw, 4.6rem);
+}
+@media (min-width:860px){ .pie-interior{ grid-template-columns:1.3fr .8fr .9fr; } }
+.pie-marca{
+  font-family:var(--tipografia-titulo); font-weight:700;
+  font-size:1.5rem; display:flex; align-items:center; gap:.6rem;
+}
+.pie-marca em{ font-style:italic; color:var(--color-fresa); }
+.pie-interior p{ color:rgba(251,244,232,.72); font-size:.95rem; max-width:36ch; margin-top:.8rem; }
+.pie-titulo{
+  font-size:.8rem; font-weight:700; text-transform:uppercase;
+  letter-spacing:.2em; color:var(--color-fresa); margin-bottom:1rem;
+}
+.pie-lista{ list-style:none; display:grid; gap:.55rem; }
+.pie-lista a{
+  color:rgba(251,244,232,.82); text-decoration:none;
+  transition:color var(--transicion), padding-left var(--transicion);
+}
+.pie-lista a:hover{ color:var(--color-fresa); padding-left:.4rem; }
+.pie-legal{
+  border-top:1px solid rgba(251,244,232,.15);
+  padding-block:1.25rem;
+  display:flex; flex-wrap:wrap; justify-content:space-between; gap:.6rem;
+  font-size:.84rem; color:rgba(251,244,232,.6);
+}
+
+/* ---------------------------------------------------------------------
+   12 · ACCESIBILIDAD (MOVIMIENTO REDUCIDO)
+--------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+    scroll-behavior:auto !important;
+  }
+  .revelar{ opacity:1; transform:none; }
 }
