@@ -443,61 +443,61 @@
 
   /* --- Envío real del formulario a Azure API --- */
   var formulario = document.getElementById('formulario-contacto');
-  var botonEnviar = document.getElementById('btn-enviar');
-  var mensajeEstado = document.getElementById('mensaje-estado');
+var botonEnviar = document.getElementById('btn-enviar');
+var mensajeEstado = document.getElementById('mensaje-estado');
 
-  // URL del App Service en Azure
-  var apiUrl = 'https://heladeria-api-bee2ftmc0aae5g6.canadacentral-01.azurewebsites.net/api/Contactos](https://heladeria-api-bee2ftmc0aae5g6.canadacentral-01.azurewebsites.net/api/Contactos';
+var apiUrl = 'https://heladeria-api-bee2ftmc0aae5g6.canadacentral-01.azurewebsites.net/api/Contactos';
 
-  formulario.addEventListener('submit', async function(evento){
+formulario.addEventListener('submit', async function(evento){
     evento.preventDefault();
 
-    // Deshabilitar botón y mostrar estado de carga
     botonEnviar.disabled = true;
     var textoOriginal = botonEnviar.innerHTML;
     botonEnviar.innerHTML = 'Enviando... ⏳';
     mensajeEstado.textContent = '';
 
-    // Mapeo de datos para el ContactoCreateDto
+    // Mapeo EXACTO que coincide con tu ContactoCreateDto
     var payload = {
-      nombre: document.getElementById('campo-nombre').value,
-      correo: document.getElementById('campo-email').value,
-      telefono: document.getElementById('campo-telefono').value,
-      mensaje: document.getElementById('campo-mensaje').value
+        nombre: document.getElementById('campo-nombre').value,
+        correo: document.getElementById('campo-email').value,    // Debe ser 'correo', NO 'email'
+        telefono: document.getElementById('campo-telefono').value,
+        mensaje: document.getElementById('campo-mensaje').value
     };
 
     try {
-      var respuesta = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-      });
+        var respuesta = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
 
-      if (respuesta.ok) {
-        botonEnviar.innerHTML = '¡Mensaje enviado! ✷';
-        mensajeEstado.style.color = '#2e7d32'; // Verde
-        mensajeEstado.textContent = '¡Gracias! Tu mensaje ha sido registrado correctamente.';
-        formulario.reset();
+        if (respuesta.ok) {
+            botonEnviar.innerHTML = '¡Mensaje enviado! ✷';
+            mensajeEstado.style.color = '#2e7d32'; // Verde
+            mensajeEstado.textContent = '¡Gracias! Tu mensaje ha sido registrado en Azure SQL.';
+            formulario.reset();
 
-        setTimeout(function(){
-          botonEnviar.innerHTML = textoOriginal;
-          botonEnviar.disabled = false;
-        }, 3500);
+            setTimeout(function(){
+                botonEnviar.innerHTML = textoOriginal;
+                botonEnviar.disabled = false;
+            }, 3500);
 
-      } else {
-        throw new Error('Error en la respuesta del servidor: ' + respuesta.status);
-      }
+        } else {
+            // Lee los detalles del error devuelto por la API
+            var errorData = await respuesta.text();
+            console.error('Detalles del error 400/500:', errorData);
+            throw new Error('Error en el servidor: ' + respuesta.status);
+        }
     } catch (error) {
-      console.error('Error al enviar:', error);
-      botonEnviar.innerHTML = textoOriginal;
-      botonEnviar.disabled = false;
-      mensajeEstado.style.color = '#c62828'; // Rojo
-      mensajeEstado.textContent = 'Ocurrió un problema al enviar el mensaje. Inténtalo de nuevo.';
+        console.error('Error al enviar:', error);
+        botonEnviar.innerHTML = textoOriginal;
+        botonEnviar.disabled = false;
+        mensajeEstado.style.color = '#c62828'; // Rojo
+        mensajeEstado.textContent = 'Ocurrió un problema al enviar el mensaje. Revisa la consola (F12).';
     }
-  });
-
+});
   /* --- Año automático en el pie --- */
   document.getElementById('anio-actual').textContent = new Date().getFullYear();
 })();
