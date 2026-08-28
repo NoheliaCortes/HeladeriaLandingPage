@@ -492,7 +492,7 @@
       if (respuesta.ok) {
         botonEnviar.innerHTML = '¡Mensaje enviado! ✷';
         mensajeEstado.style.color = '#2e7d32';
-        mensajeEstado.textContent = '¡Gracias! Tu mensaje ha sido registrado en Azure SQL.';
+        mensajeEstado.textContent = '¡Gracias! Tu mensaje ha sido registrado.';
         formulario.reset();
 
         setTimeout(function(){
@@ -510,7 +510,7 @@
       botonEnviar.innerHTML = textoOriginal;
       botonEnviar.disabled = false;
       mensajeEstado.style.color = '#c62828';
-      mensajeEstado.textContent = 'Ocurrió un problema al enviar el mensaje. Revisa la consola (F12).';
+      mensajeEstado.textContent = 'Ocurrió un problema al enviar el mensaje.';
     }
   });
 
