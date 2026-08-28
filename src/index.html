@@ -322,74 +322,37 @@
     </div>
   </section>
 
-  <!-- ============================================================
-       CONTACTO
-  ============================================================= -->
-  <section class="seccion seccion-contacto" id="contacto">
-    <div class="contenedor">
-
-      <div class="encabezado-seccion">
-        <p class="miga-seccion revelar">Contáctanos</p>
-        <h2 class="titulo-seccion revelar" style="--retardo-revelar:.1s">Ven a probarlo, o escríbenos dos líneas</h2>
-        <p class="descripcion-seccion revelar" style="--retardo-revelar:.2s">
-          Encargos de tartas heladas, eventos o simplemente dudas sobre
-          sabores del día: te leemos entre batido y batido.
-        </p>
-      </div>
-
-      <div class="contacto-rejilla">
-
-        <!-- Formulario de contacto -->
-        <form class="formulario-contacto revelar" action="#" method="post">
-          <div class="campo-fila">
-            <div class="campo">
-              <label for="campo-nombre">Nombre</label>
-              <input type="text" id="campo-nombre" name="nombre" placeholder="Tu nombre" autocomplete="name" required>
-            </div>
-            <div class="campo">
-              <label for="campo-email">Correo electrónico</label>
-              <input type="email" id="campo-email" name="email" placeholder="tucorreo@ejemplo.com" autocomplete="email" required>
-            </div>
-          </div>
-          <div class="campo">
-            <label for="campo-mensaje">Mensaje</label>
-            <textarea id="campo-mensaje" name="mensaje" placeholder="Cuéntanos: ¿una tarta helada, un encargo, una duda dulce…?" required></textarea>
-          </div>
-          <button class="boton boton-primario boton-enviar" type="submit">Enviar mensaje <span class="flecha-boton" aria-hidden="true">→</span></button>
-        </form>
-
-        <!-- Información lateral + multimedia -->
-        <aside class="info-lateral">
-          <div class="tarjeta-datos revelar" style="--retardo-revelar:.1s">
-            <div class="bloque-datos">
-              <h3>✷ La heladería</h3>
-              <p>Calle de la Marina, 14<br>46003 · Valencia (Barrio del Carmen)<br>Frente al mercado central</p>
-            </div>
-            <div class="bloque-datos">
-              <h3>✷ Horarios</h3>
-              <div class="fila-horario"><span class="dia">Lunes — Jueves</span><span class="hora">12:00 – 22:00</span></div>
-              <div class="fila-horario"><span class="dia">Viernes — Sábado</span><span class="hora">12:00 – 00:00</span></div>
-              <div class="fila-horario"><span class="dia">Domingo</span><span class="hora">12:00 – 21:00</span></div>
-            </div>
-            <div class="bloque-datos">
-              <h3>✷ Directo al obrador</h3>
-              <p><a href="tel:+34963000000">+34 963 00 00 00</a><br>
-              <a href="mailto:hola@lacuchararosa.es">hola@lacuchararosa.es</a></p>
-            </div>
-          </div>
-
-          <div class="marco-mapa revelar" style="--retardo-revelar:.2s">
-            <img src="https://image.qwenlm.ai/public_source/f08010c1-c14f-4c86-8454-0d84e61bedc5/1b4b78e75-73cb-4a18-ba4e-43df2b39da6a.png"
-                 alt="Fachada rosa de la heladería con toldo a rayas y olivos en la entrada" loading="lazy" decoding="async">
-            <span class="mapa-rotulo">📍 Estamos aquí, junto al mercado</span>
-          </div>
-
-          <a class="boton boton-contorno revelar" style="--retardo-revelar:.3s" href="#contacto">Abrir en el mapa <span class="flecha-boton" aria-hidden="true">→</span></a>
-        </aside>
-
-      </div>
+  <!-- Formulario de contacto -->
+<form class="formulario-contacto revelar" id="formulario-contacto" action="#" method="post">
+  <div class="campo-fila">
+    <div class="campo">
+      <label for="campo-nombre">Nombre</label>
+      <input type="text" id="campo-nombre" name="nombre" placeholder="Tu nombre" autocomplete="name" required>
     </div>
-  </section>
+    <div class="campo">
+      <label for="campo-email">Correo electrónico</label>
+      <input type="email" id="campo-email" name="email" placeholder="tucorreo@ejemplo.com" autocomplete="email" required>
+    </div>
+  </div>
+  
+  <!-- Nuevo campo: Teléfono -->
+  <div class="campo">
+    <label for="campo-telefono">Teléfono</label>
+    <input type="tel" id="campo-telefono" name="telefono" placeholder="+505 8888-8888" autocomplete="tel" required>
+  </div>
+
+  <div class="campo">
+    <label for="campo-mensaje">Mensaje</label>
+    <textarea id="campo-mensaje" name="mensaje" placeholder="Cuéntanos: ¿una tarta helada, un encargo, una duda dulce…?" required></textarea>
+  </div>
+
+  <button class="boton boton-primario boton-enviar" type="submit" id="btn-enviar">
+    Enviar mensaje <span class="flecha-boton" aria-hidden="true">→</span>
+  </button>
+
+  <!-- Mensaje de estado (Éxito / Error) -->
+  <div id="mensaje-estado" style="margin-top: 1rem; font-weight: bold;"></div>
+</form>
 
 </main>
 
@@ -436,7 +399,7 @@
 
 <script>
 /* ============================================================
-   MEJORAS PROGRESIVAS (JS vanilla, sin frameworks)
+   MEJORAS PROGRESIVAS Y CONEXIÓN CON API
 ============================================================= */
 (function(){
   'use strict';
@@ -478,15 +441,61 @@
     elementos.forEach(function(el){ observador.observe(el); });
   }
 
-  /* --- Envío simulado del formulario --- */
-  var formulario = document.querySelector('.formulario-contacto');
-  formulario.addEventListener('submit', function(evento){
+  /* --- Envío real del formulario a Azure API --- */
+  var formulario = document.getElementById('formulario-contacto');
+  var botonEnviar = document.getElementById('btn-enviar');
+  var mensajeEstado = document.getElementById('mensaje-estado');
+
+  // URL del App Service en Azure
+  var apiUrl = 'https://heladeria-api-bee2ftmc0aae5g6.canadacentral-01.azurewebsites.net/api/Contactos](https://heladeria-api-bee2ftmc0aae5g6.canadacentral-01.azurewebsites.net/api/Contactos';
+
+  formulario.addEventListener('submit', async function(evento){
     evento.preventDefault();
-    var boton = formulario.querySelector('.boton-enviar');
-    var textoOriginal = boton.innerHTML;
-    boton.innerHTML = '¡Mensaje enviado! ✷';
-    formulario.reset();
-    setTimeout(function(){ boton.innerHTML = textoOriginal; }, 3200);
+
+    // Deshabilitar botón y mostrar estado de carga
+    botonEnviar.disabled = true;
+    var textoOriginal = botonEnviar.innerHTML;
+    botonEnviar.innerHTML = 'Enviando... ⏳';
+    mensajeEstado.textContent = '';
+
+    // Mapeo de datos para el ContactoCreateDto
+    var payload = {
+      nombre: document.getElementById('campo-nombre').value,
+      correo: document.getElementById('campo-email').value,
+      telefono: document.getElementById('campo-telefono').value,
+      mensaje: document.getElementById('campo-mensaje').value
+    };
+
+    try {
+      var respuesta = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (respuesta.ok) {
+        botonEnviar.innerHTML = '¡Mensaje enviado! ✷';
+        mensajeEstado.style.color = '#2e7d32'; // Verde
+        mensajeEstado.textContent = '¡Gracias! Tu mensaje ha sido registrado correctamente.';
+        formulario.reset();
+
+        setTimeout(function(){
+          botonEnviar.innerHTML = textoOriginal;
+          botonEnviar.disabled = false;
+        }, 3500);
+
+      } else {
+        throw new Error('Error en la respuesta del servidor: ' + respuesta.status);
+      }
+    } catch (error) {
+      console.error('Error al enviar:', error);
+      botonEnviar.innerHTML = textoOriginal;
+      botonEnviar.disabled = false;
+      mensajeEstado.style.color = '#c62828'; // Rojo
+      mensajeEstado.textContent = 'Ocurrió un problema al enviar el mensaje. Inténtalo de nuevo.';
+    }
   });
 
   /* --- Año automático en el pie --- */
